@@ -1,17 +1,20 @@
 //Setup
-var express       = require('express');
-var https         = require('https');
-var fs            = require('fs');
-var cookieParser  = require('cookie-parser');
-var bodyParser    = require('body-parser');
-var Sequelize     = require('sequelize');
-var session       = require('express-session');
-var passport      = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var crypto        = require('crypto');
-var app           = express();
-var index         = require(__dirname+'/routes/index.js');
-var port          = process.env.PORT || 4433;
+var express        = require('express');
+var https          = require('https');
+var fs             = require('fs');
+var cookieParser   = require('cookie-parser');
+var bodyParser     = require('body-parser');
+var Sequelize      = require('sequelize');
+var session        = require('express-session');
+var passport       = require('passport');
+var LocalStrategy  = require('passport-local').Strategy;
+var SequelizeStore = require('connect-session-sequelize')(session.Store);
+var crypto         = require('crypto');
+var app            = express();
+var index          = require(__dirname+'/routes/index.js');
+var port           = process.env.PORT || 4433;
+//Connect sequelize
+var db = new Sequelize('postgres://www@localhost:5432/homeserver');
 //ExpressSettings
 app.set('views', __dirname+'/views');
 app.set('view engine', 'jade');
@@ -21,14 +24,17 @@ app.use(bodyParser.urlencoded({extended: false}));
 //Passport init
 app.use(session({
   secret: 'stograncazzo',
-  cookie: { maxAge: 1000 * 15 },
+  cookie: {
+    secure: true,
+    maxAge: 1000 * 60 * 60
+  },
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
+  store: new SequelizeStore({ db: db })
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-//Database
-var db = new Sequelize('postgres://www@localhost:5432/homeserver');
+//Models
 var User = db.define('users', {
   username: {
     type: Sequelize.STRING(24),
@@ -61,8 +67,7 @@ User.sync();
 app.use('/', index);
 app.post('/login', passport.authenticate('local', {
   successRedirect: '/daw',
-  failureRedirect: '/login',
-  failureFlash: true
+  failureRedirect: '/login'
 }));
 //Static
 app.use(express.static(__dirname+'/public/'));
