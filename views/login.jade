@@ -1,28 +1,24 @@
-doctype html
-html(lang='en')
-  include ./head.jade
-  body
-    div(class='container')
-      div(class='col-sm-6 col-sm-offset-3')
-        h1
-          span(class='fa fa-sign-in')
-          |Login
-        if message
-          div(class='alert alert-danger') message
-        form(action='/login' method='post')
-          div(class='form-group')
-            label Username
-            input(type='text' class='form-control' name='username')
-          div(class='form-group')
-            label Password
-            input(type='password' class='form-control' name='password')
-          button(type='submit' class='btn btn-warning btn-lg') Login
-        hr
-        p
-          |Need an account? 
-          a(href='/register') Register
-        p
-          |Or go 
-          a(href='/') home
-    include ./scripts.jade
-    script(src='/js/login.js')
+extends layout
+block title
+  title Login
+block content
+  div(class='container')
+    div(class='col-sm-6 col-sm-offset-3')
+      h1 Login
+      if message
+        div(class='alert alert-danger')= message
+      form(action='/login' method='post')
+        div(class='form-group')
+          label Username
+          input(type='text' class='form-control' name='username')
+        div(class='form-group')
+          label Password
+          input(type='password' class='form-control' name='password')
+        button(type='submit' class='btn btn-info') Login
+      hr
+      p
+        |Need an account? 
+        a(href='/register') Register
+      p
+        |Or go 
+        a(href='/') home

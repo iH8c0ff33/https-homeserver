@@ -5,6 +5,7 @@ var fs            = require('fs');
 var cookieParser  = require('cookie-parser');
 var bodyParser    = require('body-parser');
 var Sequelize     = require('sequelize');
+var session       = require('express-session');
 var passport      = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var crypto        = require('crypto');
@@ -18,10 +19,11 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 //Passport init
-app.use(require('express-session')({
-    secret: 'stograncazzo',
-    resave: false,
-    saveUninitialized: false
+app.use(session({
+  secret: 'stograncazzo',
+  cookie: { maxAge: 1000 * 15 },
+  resave: true,
+  saveUninitialized: true
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -57,39 +59,39 @@ var User = db.define('users', {
 User.sync();
 //Routes
 app.use('/', index);
-app.post('/login', passport.authenticate('local', { failureRedirect: '/login' }), function (req, res) {
-  res.send('authenticated');
-});
+app.post('/login', passport.authenticate('local', {
+  successRedirect: '/daw',
+  failureRedirect: '/login',
+  failureFlash: true
+}));
 //Static
 app.use(express.static(__dirname+'/public/'));
 //Passport config
 passport.use(new LocalStrategy(function (username, password, done) {
-  console.log('username: '+username);
-  console.log('password: '+password);
   User.findOne({ where: { username: username } }).then(function (user) {
-    if (!user) { console.log('not found'); return done(null, false); }
+    if (!user) { return done(null, false); }
     crypto.pbkdf2(password, user.salt, 4096, 512, 'sha256', function (err, hash) {
-      if (err) { console.log('err'); throw err; }
-      console.log(hash.toString('hex'));
-      console.log(user.passwordHash.toString('hex'));
-      if (hash.toString('hex') == user.passwordHash.toString('hex')) { console.log('match'); return done(null, user); } else { console.log('no match'); return done(null, false); }
-    });
-  }, function (err) { return done(err); });
-}));
-passport.serializeUser(function (user, done) {
-  done(null, user.id);
-});
-passport.deserializeUser(function (id, done) {
-  User.findById(id).then(function (user) {
-    done(null, user);
-  }, function (err) {
-    done(err, null);
+      if (err) { throw err; }
+      if (hash.toString('hex') == user.passwordHash.toString('hex')) {
+        return done(null, user); } else { return done(null, false);
+        }
+      });
+    }, function (err) { return done(err); });
+  }));
+  passport.serializeUser(function (user, done) {
+    done(null, user.id);
   });
-});
-//HTTPS
-var httpsOptions = {
-  key: fs.readFileSync(__dirname+'/key.pem'),
-  cert: fs.readFileSync(__dirname+'/cert.pem')
-};
-//Start
-https.createServer(httpsOptions, app).listen(port);
+  passport.deserializeUser(function (id, done) {
+    User.findById(id).then(function (user) {
+      done(null, user);
+    }, function (err) {
+      done(err, null);
+    });
+  });
+  //HTTPS
+  var httpsOptions = {
+    key: fs.readFileSync(__dirname+'/key.pem'),
+    cert: fs.readFileSync(__dirname+'/cert.pem')
+  };
+  //Start
+  https.createServer(httpsOptions, app).listen(port);
