@@ -18,6 +18,7 @@
   "homepage": "https://github.com/iH8c0ff33/https-homeserver#readme",
   "dependencies": {
     "express": "^4.13.3",
-    "jade": "^1.11.0"
+    "jade": "^1.11.0",
+    "passport-local": "^1.0.0"
   }
 }

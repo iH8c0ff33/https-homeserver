@@ -1,0 +1,19 @@
+doctype html
+html(lang='en')
+  include ./head.jade
+  body
+    div(class='container')
+      div(class='col-md-6 col-md-push-3')
+        div(class='row' style='position: relative; top: 8em;')
+          div(class='panel panel-info')
+            div(class='panel-heading') Login
+            div(class='panel-body' id='panel-body')
+              div(class='alert alert-warning')
+                b Login
+                p You don't need to register, if your e-mail is authorised you can just login
+              div(class='input-group')
+                input(type='text' class='form-control col-xs-1' placeholder='yourname@example.com' id='email')
+                span(class='input-group-btn')
+                  button(class='btn btn-default' type='button' id='send-button') Login
+    include ./scripts.jade
+    script(src='/js/login.js')
