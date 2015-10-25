@@ -22,7 +22,7 @@ module.exports = function (passport, sessionStore) {
         if (err) { return next(err); }
         return waitSession(req, res, next, function (err) {
           if (err) { return next(err); }
-          res.redirect('/auth/test');
+          res.redirect('/');
         });
       });
     })(req, res, next);

@@ -47,6 +47,21 @@ app.use(flash());
 app.use('/', require(__dirname+'/routes/index.js'));
 app.use('/auth', require(__dirname+'/routes/authentication.js')(passport, sessionStore));
 app.use(express.static(__dirname+'/public/'));
+/////////////
+// 404/500 //
+/////////////
+app.use(function (req, res) {
+  res.render('error', {
+    status: '404 Not Found',
+    message: 'Sorry. The page you requested was not found on this server.'
+  });
+});
+// app.use(function (err, req, res, next) {
+//   res.render('error', {
+//     status: 'Server Error',
+//     message: 'Sorry. Something has gone wrong with your request, we\'ll try to fix this problem soon.'
+//   });
+// });
 /////////////////////
 // Passport config //
 /////////////////////
