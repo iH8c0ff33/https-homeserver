@@ -30,9 +30,12 @@ module.exports = function (passport, sessionStore) {
   /////////////
   // /logout //
   /////////////
-  router.get('/logout' , function (req, res) {
+  router.get('/logout' , function (req, res, next) {
     req.logout();
-    res.redirect('/login');
+    return waitSession(req, res, next, function (err) {
+      if (err) { return next(err); }
+      res.redirect('/');
+    });
   });
   ///////////
   // /test //
