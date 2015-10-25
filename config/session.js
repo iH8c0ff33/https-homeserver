@@ -9,7 +9,7 @@ module.exports = function (sessionStore) {
       maxAge: 1000 * 60 * 60
     },
     resave: false, //Don't enable (will break with sequelize)
-    saveUninitialized: false, //No need to enable this since not using flashes
+    saveUninitialized: true, //Need to enable to use flashes
     store: sessionStore
   }
   return sessionConfig;

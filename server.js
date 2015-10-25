@@ -6,6 +6,7 @@ var cookieParser   = require('cookie-parser');
 var bodyParser     = require('body-parser');
 var session        = require('express-session');
 var SequelizeStore = require('connect-session-sequelize')(session.Store);
+var flash          = require('express-flash');
 var passport       = require('passport');
 var LocalStrategy  = require('passport-local').Strategy;
 var app            = express();
@@ -39,11 +40,12 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(session(require(__dirname+'/config/session.js')(sessionStore)));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 ////////////
 // Routes //
 ////////////
 app.use('/', require(__dirname+'/routes/index.js'));
-app.use('/auth', require(__dirname+'/routes/authentication.js')(passport));
+app.use('/auth', require(__dirname+'/routes/authentication.js')(passport, sessionStore));
 app.use(express.static(__dirname+'/public/'));
 /////////////////////
 // Passport config //
