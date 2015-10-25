@@ -15,6 +15,8 @@ var index          = require(__dirname+'/routes/index.js');
 var port           = process.env.PORT || 4433;
 //Connect sequelize
 var db = new Sequelize('postgres://www@localhost:5432/homeserver');
+var sessionStore = new SequelizeStore({ db: db });
+sessionStore.sync();
 //ExpressSettings
 app.set('views', __dirname+'/views');
 app.set('view engine', 'jade');
@@ -28,9 +30,9 @@ app.use(session({
     secure: true,
     maxAge: 1000 * 60 * 60
   },
-  resave: true,
+  resave: false,
   saveUninitialized: true,
-  store: new SequelizeStore({ db: db })
+  store: sessionStore
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -65,23 +67,36 @@ var User = db.define('users', {
 User.sync();
 //Routes
 app.use('/', index);
-app.post('/login', passport.authenticate('local', {
-  successRedirect: '/daw',
-  failureRedirect: '/login'
-}));
+app.post('/login', function (req, res, next) {
+  passport.authenticate('local', function (err, user, info) {
+    if (err) { return next(err); }
+    if (!user) {
+      console.log(info);
+      return res.render('login', info)
+    }
+    req.login(user, function (err) {
+      if (err) { return next(err); }
+      return res.redirect('/daw');
+    });
+  })(req, res, next);
+});
+app.get('/logout' , function (req, res) {
+  req.logout();
+  res.redirect('/login');
+})
 //Static
 app.use(express.static(__dirname+'/public/'));
 //Passport config
 passport.use(new LocalStrategy(function (username, password, done) {
   User.findOne({ where: { username: username } }).then(function (user) {
-    if (!user) { return done(null, false); }
+    if (!user) { return done(null, false, {message: 'wrong username'}); }
     crypto.pbkdf2(password, user.salt, 4096, 512, 'sha256', function (err, hash) {
       if (err) { throw err; }
       if (hash.toString('hex') == user.passwordHash.toString('hex')) {
-        return done(null, user); } else { return done(null, false);
+        return done(null, user); } else { return done(null, false, {message: 'wrong password'});
         }
       });
-    }, function (err) { return done(err); });
+    }, function (err) { return done(null, false, {message: 'wrong username'}); });
   }));
   passport.serializeUser(function (user, done) {
     done(null, user.id);
