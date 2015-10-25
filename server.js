@@ -66,7 +66,8 @@ app.use(function (req, res) {
 // Passport config //
 /////////////////////
 var passportSerialize = require(__dirname+'/config/passport-serialize.js')(User);
-passport.use(require(__dirname+'/config/local-strategy.js')(User));
+passport.use('local-login', require(__dirname+'/config/local-strategy.js')(User));
+passport.use('local-signup', require(__dirname+'/config/local-signup-strategy.js')(User));
 passport.serializeUser(passportSerialize.serialize);
 passport.deserializeUser(passportSerialize.deserialize);
 ////////////

@@ -10,6 +10,7 @@ router.get('/', function (req, res) {
   res.render('index', { username: req.user.username });
 });
 router.get('/login', function (req, res) {
+  if (req.user) { return res.redirect('/'); }
   var error = req.flash('error');
   res.render('login', { message: error[0] });
 });

@@ -6,27 +6,23 @@ module.exports = function (Sequelize, db) {
     username: {
       type: Sequelize.STRING(24),
       unique: true,
-      validate: {
-        notNull: true
-      }
+      allowNull: false
     },
     passwordHash: {
       type: Sequelize.BLOB,
-      validate: {
-        notNull: true
-      }
+      allowNull: false
     },
     salt: {
       type: Sequelize.BLOB,
-      validate: {
-        notNull: true
-      }
+      allowNull: false
     },
     email: {
       type: Sequelize.STRING,
-      validate: {
-        notNull: true
-      }
+      allowNull: false
+    },
+    permissionLevel: {
+      type: Sequelize.INTEGER,
+      allowNull: false
     }
   });
   User.sync();
