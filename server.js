@@ -46,6 +46,7 @@ app.use(flash());
 ////////////
 app.use('/', require(__dirname+'/routes/index.js'));
 app.use('/auth', require(__dirname+'/routes/authentication.js')(passport));
+app.use('/user', require(__dirname+'/routes/user.js')(User));
 app.use(express.static(__dirname+'/public/'));
 /////////////
 // 404/500 //
@@ -57,6 +58,7 @@ app.use(function (req, res) {
   });
 });
 app.use(function (err, req, res, next) {
+  console.log(err);
   res.render('error', {
     status: 'Server Error',
     message: 'Sorry. Something has gone wrong with your request, we\'ll try to fix this problem soon.'
