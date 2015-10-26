@@ -9,10 +9,18 @@ module.exports = function (passport, sessionStore) {
   // /login //
   ////////////
   router.post('/login', function (req, res, next) {
+    var error = false;
+    if (!req.body.username) { req.flash('login-error', 'Sorry. Username field seems to be blank.'); error = true; }
+    if (!req.body.password) { req.flash('login-error', 'Sorry. Password field seems to be blank.'); error = true; }
+    if (error) {
+      return waitSession(req, res, next, function (err) {
+        if (err) { return next(err); }
+        res.redirect('/login');
+      });
+    }
     passport.authenticate('local-login', function (err, user, info) {
       if (err) { return next(err); }
       if (!user) {
-        req.flash('error', info.message);
         return waitSession(req, res, next, function (err) {
           if (err) { return next(err); }
           res.redirect('/login');
@@ -42,9 +50,9 @@ module.exports = function (passport, sessionStore) {
   ///////////////
   router.post('/register', function (req, res, next) {
     var error = false;
-    if (!req.body.username) { req.flash('register-error', 'username can\'t be blank'); error = true; }
-    if (!req.body.password) { req.flash('register-error', 'password can\'t be blank'); error = true; }
-    if (!req.body.email) { req.flash('register-error', 'email can\'t be blank'); error = true; }
+    if (!req.body.username) { req.flash('register-error', 'Sorry. You must enter a username.'); error = true; }
+    if (!req.body.password) { req.flash('register-error', 'Sorry. Password can\'t be blank.'); error = true; }
+    if (!req.body.email) { req.flash('register-error', 'Sorry. Email can\'t be blank'); error = true; }
     if (error) {
       return waitSession(req, res, next, function (err) {
         if (err) { return next(err); }
