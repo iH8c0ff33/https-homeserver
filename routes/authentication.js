@@ -12,7 +12,6 @@ module.exports = function (passport, sessionStore) {
     passport.authenticate('local-login', function (err, user, info) {
       if (err) { return next(err); }
       if (!user) {
-        req.flash('error', info.message);
         return waitSession(req, res, next, function (err) {
           if (err) { return next(err); }
           res.redirect('/login');
