@@ -84,4 +84,4 @@ module.exports = function (passport) {
     res.send('you are not ok');
   });
   return router;
-}
+};
