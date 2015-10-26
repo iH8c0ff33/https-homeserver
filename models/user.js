@@ -18,6 +18,7 @@ module.exports = function (Sequelize, db) {
     },
     email: {
       type: Sequelize.STRING,
+      unique: true,
       allowNull: false
     },
     permissionLevel: {

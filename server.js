@@ -20,7 +20,7 @@ var port  = process.env.PORT || 4433;
 //////////////
 var Sequelize    = require('sequelize');
 var dbConfig     = require(__dirname+'/config/database.js');
-var db           = new Sequelize(dbConfig.url, { logging: false });
+var db           = new Sequelize(dbConfig.url, { logging: console.log });
 var sessionStore = new SequelizeStore({ db: db });
 ////////////
 // Models //
@@ -56,18 +56,18 @@ app.use(function (req, res) {
     message: 'Sorry. The page you requested was not found on this server.'
   });
 });
-// app.use(function (err, req, res, next) {
-//   res.render('error', {
-//     status: 'Server Error',
-//     message: 'Sorry. Something has gone wrong with your request, we\'ll try to fix this problem soon.'
-//   });
-// });
+app.use(function (err, req, res, next) {
+  res.render('error', {
+    status: 'Server Error',
+    message: 'Sorry. Something has gone wrong with your request, we\'ll try to fix this problem soon.'
+  });
+});
 /////////////////////
 // Passport config //
 /////////////////////
 var passportSerialize = require(__dirname+'/config/passport-serialize.js')(User);
 passport.use('local-login', require(__dirname+'/config/local-strategy.js')(User));
-passport.use('local-signup', require(__dirname+'/config/local-signup-strategy.js')(User));
+passport.use('local-register', require(__dirname+'/config/local-signup-strategy.js')(User));
 passport.serializeUser(passportSerialize.serialize);
 passport.deserializeUser(passportSerialize.deserialize);
 ////////////
