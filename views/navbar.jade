@@ -8,12 +8,18 @@ nav(class='navbar navbar-default')
   div(class='collapse navbar-collapse' id='navbar-collapse')
     ul(class='nav navbar-nav')
     ul(class='nav navbar-nav navbar-right')
-      if username
+      if user
         li(class='dropdown')
           a(href='#' class='dropdown-toggle' data-toggle='dropdown')
-            |#{username}
+            |#{user.username}
             span(class='caret')
           ul(class='dropdown-menu')
+            li
+              a(href='/user/info') Info
+            if user.permissionLevel > 9
+              li
+                a(href='/user/manage') Manage
+            li(class='divider')
             li
               a(href='/auth/logout') Logout
       else
