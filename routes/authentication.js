@@ -4,7 +4,7 @@
 var router = require('express').Router();
 var waitSession = require(__dirname+'/../config/wait-save.js');
 
-module.exports = function (passport, sessionStore) {
+module.exports = function (passport) {
   ////////////
   // /login //
   ////////////
