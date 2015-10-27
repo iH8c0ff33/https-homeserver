@@ -6,10 +6,10 @@ block body
     div(class='row')
       div(class='col-md-12' style='padding: 40px 15px; text-align: center;')
         h1 Oops!
-        h2= status
+        h2= title
         div(class='error-details')
           p= message
         div(class='error-actions' style='margin-top: 15px; margin-bottom: 15px;')
-          a(href='/' class='btn btn-primary btn-lg')
+          a(href='#{link}' class='btn btn-primary btn-lg')
             span(class='glyphicon glyphicon-home' style='margin-right: 10px;')
-            |Take Me Home
+            |#{linkText}

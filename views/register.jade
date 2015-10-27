@@ -2,20 +2,19 @@ extends layout
 block title
   title Register
 block content
-  div(class='container')
-    div(class='col-sm-6 col-sm-offset-3')
-      h1 Register
-      if error
-        each val in error
-          div(class='alert alert-danger')= val
-      form(action='/auth/register' method='post')
-        div(class='form-group')
-          label Username
-          input(type='text' class='form-control' name='username' autocomplete='off')
-        div(class='form-group')
-          label Email
-          input(type='text' class='form-control' name='email' autocomplete='off')
-        div(class='form-group')
-          label Password
-          input(type='password' class='form-control' name='password' autocomplete='off')
-        button(type='submit' class='btn btn-info') Register
+  div(class='col-sm-6 col-sm-offset-3')
+    h1 Register
+    if error
+      each val in error
+        div(class='alert alert-danger')= val
+    form(action='/auth/register' method='post')
+      div(class='form-group')
+        label Username
+        input(type='text' class='form-control' name='username' autocomplete='off' required)
+      div(class='form-group')
+        label Email
+        input(type='email' class='form-control' name='email' autocomplete='off' required)
+      div(class='form-group')
+        label Password
+        input(type='password' class='form-control' name='password' autocomplete='off' required)
+      button(type='submit' class='btn btn-info') Register

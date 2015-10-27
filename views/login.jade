@@ -2,23 +2,22 @@ extends layout
 block title
   title Login
 block content
-  div(class='container')
-    div(class='col-sm-6 col-sm-offset-3')
-      h1 Login
-      if message
-        div(class='alert alert-danger')= message
-      form(action='/auth/login' method='post')
-        div(class='form-group')
-          label Username
-          input(type='text' class='form-control' name='username' id='username' autocomplete='off')
-        div(class='form-group')
-          label Password
-          input(type='password' class='form-control' name='password' id='password' autocomplete='on')
-        button(type='submit' class='btn btn-info') Login
-      hr
-      p
-        |Need an account? 
-        a(href='/register') Register
-      p
-        |Or go 
-        a(href='/') home
+  div(class='col-sm-6 col-sm-offset-3')
+    h1 Login
+    if message
+      div(class='alert alert-danger')= message
+    form(action='/auth/login' method='post')
+      div(class='form-group')
+        label Username
+        input(type='text' class='form-control' name='username' id='username' autocomplete='off')
+      div(class='form-group')
+        label Password
+        input(type='password' class='form-control' name='password' id='password' autocomplete='on')
+      button(type='submit' class='btn btn-info') Login
+    hr
+    p
+      |Need an account? 
+      a(href='/register') Register
+    p
+      |Or go 
+      a(href='/') home

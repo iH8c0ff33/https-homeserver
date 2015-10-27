@@ -53,15 +53,19 @@ app.use(express.static(__dirname+'/public/'));
 /////////////
 app.use(function (req, res) {
   res.render('error', {
-    status: '404 Not Found',
-    message: 'Sorry. The page you requested was not found on this server.'
+    title: '404 Not Found',
+    message: 'Sorry. The page you requested was not found on this server.',
+    link: '/',
+    linkText: 'Take Me Home'
   });
 });
 app.use(function (err, req, res, next) {
   console.log(err);
   res.render('error', {
-    status: 'Server Error',
-    message: 'Sorry. Something has gone wrong with your request, we\'ll try to fix this problem soon.'
+    title: '500 Server Error',
+    message: 'Sorry. Something has gone wrong with your request, we\'ll try to fix this problem soon.',
+    link: '/',
+    linkText: 'Take Me Home'
   });
 });
 /////////////////////

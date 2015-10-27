@@ -2,4 +2,11 @@ extends layout
 block title
   title User Information
 block content
-  
+  div(style='text-align: center;')
+    h1 User Informations
+  h4 Username
+  p= user.username
+  h4 Email
+  p=user.email
+  h4 Permission Level
+  p=user.permissionLevel
