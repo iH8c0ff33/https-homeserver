@@ -17,12 +17,21 @@ block content
           tbody
             if users
               each val in users
-                tr
-                  td= val.id
-                  th= val.username
-                  td= val.email
-                  td= val.permissionLevel
-                  td= val.createdAt
+                if user.permissionLevel > 9
+                  tr
+                    td= val.id
+                    th
+                      a(href='/manage/'+val.username)= val.username
+                    td= val.email
+                    td= val.permissionLevel
+                    td= val.createdAt
+                else
+                  tr
+                    td= val.id
+                    th= val.username
+                    td= val.email
+                    td= val.permissionLevel
+                    td= val.createdAt
             else
               tr
                 th N/A
