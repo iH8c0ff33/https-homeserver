@@ -76,12 +76,5 @@ module.exports = function (passport) {
       });
     })(req, res, next);
   });
-  ///////////
-  // /test //
-  ///////////
-  router.get('/test', function (req, res) {
-    if (req.user) { return res.send('you are ok'); }
-    res.send('you are not ok');
-  });
   return router;
 };
