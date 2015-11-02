@@ -17,9 +17,9 @@ module.exports = function (User) {
   /////////////
   router.get('/manage', function (req, res, next) {
     if (!req.user) { return res.redirect('/authenticate'); }
-    if (req.user.permissionLevel < 10) { return res.render('error', {
+    if (req.user.permissionLevel < 6) { return res.render('error', {
       title: 'Insufficient Permission',
-      message: 'Sorry. You need permission level greater than 9 to view this page.',
+      message: 'Sorry. You need permission level greater than 5 to view this page.',
       link: '/',
       linkText: 'Take Me Home'
     }); }

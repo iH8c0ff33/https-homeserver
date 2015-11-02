@@ -47,6 +47,7 @@ app.use(flash());
 app.use('/', require(__dirname+'/routes/index.js'));
 app.use('/auth', require(__dirname+'/routes/authentication.js')(passport));
 app.use('/user', require(__dirname+'/routes/user.js')(User));
+app.use('/manage', require(__dirname+'/routes/manage.js')(User));
 app.use(express.static(__dirname+'/public/'));
 /////////////
 // 404/500 //
