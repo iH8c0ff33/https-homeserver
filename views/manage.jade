@@ -2,4 +2,31 @@ extends layout
 block title
   title Manage Users
 block content
-  
+  div(class='panel panel-default')
+    div(class='panel-heading') Manage Users
+    div(class='panel-body')
+      div(class='table-responsive')
+        table(class='table table-striped table-hover')
+          thead
+            tr
+              th UID
+              th Username
+              th Email
+              th Permission level
+              th Created at
+          tbody
+            if users
+              each val in users
+                tr
+                  td= val.id
+                  th= val.username
+                  td= val.email
+                  td= val.permissionLevel
+                  td= val.createdAt
+            else
+              tr
+                th N/A
+                th N/A
+                th N/A
+                th N/A
+                th N/A
