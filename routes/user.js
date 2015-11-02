@@ -23,6 +23,9 @@ module.exports = function (User) {
       link: '/',
       linkText: 'Take Me Home'
     }); }
+    User.findAll().then(function (users) {
+      res.render('manage', { user: req.user, users: users });
+    });
   });
   return router;
 };
