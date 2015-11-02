@@ -4,8 +4,9 @@ block title
 block content
   div(class='col-sm-6 col-sm-offset-3')
     h1 Login
-    if message
-      div(class='alert alert-danger')= message
+    if error
+      each val in error
+        div(class='alert alert-danger')= val
     form(action='/auth/login' method='post')
       div(class='form-group')
         label Username
