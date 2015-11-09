@@ -10,6 +10,7 @@ var flash          = require('express-flash');
 var passport       = require('passport');
 var LocalStrategy  = require('passport-local').Strategy;
 var app            = express();
+app.locals.basedir = __dirname+'/views';
 ///////////
 // HTTPS //
 ///////////
@@ -47,7 +48,7 @@ app.use(flash());
 app.use('/', require(__dirname+'/routes/index.js'));
 app.use('/auth', require(__dirname+'/routes/authentication.js')(passport));
 app.use('/user', require(__dirname+'/routes/user.js')(User));
-app.use('/manage', require(__dirname+'/routes/manage.js')(User));
+app.use('/error', require(__dirname+'/routes/error.js'));
 app.use(express.static(__dirname+'/public/'));
 /////////////
 // 404/500 //
@@ -62,7 +63,7 @@ app.use(function (req, res) {
 });
 app.use(function (err, req, res, next) {
   console.log(err);
-  res.render('error', {
+  res.render('error/error', {
     title: '500 Server Error',
     message: 'Sorry. Something has gone wrong with your request, we\'ll try to fix this problem soon.',
     link: '/',

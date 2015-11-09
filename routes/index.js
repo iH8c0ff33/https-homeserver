@@ -26,10 +26,4 @@ router.get('/register', function (req, res) {
   if (req.user) { return res.redirect('/'); }
   res.render('register', { error: req.flash('register-error') });
 });
-///////////////////
-// /authenticate //
-///////////////////
-router.get('/authenticate', function (req, res) {
-  res.render('authenticate');
-});
 module.exports = router;

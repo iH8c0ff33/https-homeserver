@@ -1,4 +1,4 @@
-extends layout
+extends /layouts/main
 block title
   title Manage Users
 block content
@@ -21,7 +21,7 @@ block content
                   tr
                     td= val.id
                     th
-                      a(href='/manage/'+val.username)= val.username
+                      a(href='/user/manage/'+val.username)= val.username
                     td= val.email
                     td= val.permissionLevel
                     td= val.createdAt
