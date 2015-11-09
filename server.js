@@ -54,7 +54,7 @@ app.use(express.static(__dirname+'/public/'));
 // 404/500 //
 /////////////
 app.use(function (req, res) {
-  res.render('error', {
+  res.render('error/error', {
     title: '404 Not Found',
     message: 'Sorry. The page you requested was not found on this server.',
     link: '/',

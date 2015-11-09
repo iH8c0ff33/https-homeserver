@@ -1,4 +1,4 @@
-extends layout
+extends /layouts/main
 block title
   title Register
 block content
@@ -17,4 +17,10 @@ block content
       div(class='form-group')
         label Password
         input(type='password' class='form-control' name='password' autocomplete='off' required)
-      button(type='submit' class='btn btn-info') Register
+      button(type='submit' class='btn btn-warning') Register
+    hr
+    p
+      |Just fill out this form and you will get an account
+    p
+      |Take me 
+      a(href='/') home
