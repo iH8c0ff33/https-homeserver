@@ -1,0 +1,52 @@
+extends /layouts/main
+block title
+  title User Information
+block content
+  nav(class='col-sm-3')
+    ul(class='nav section-selector')
+      li(class='active withripple')
+        a(href='#security' data-toggle='tab' role='tab') Security
+      li(class='withripple')
+        a(href='#email' data-toggle='tab' role='tab') Email
+  nav(class='col-sm-9')
+    div(class='tab-content')
+      div(role='tabpanel' class='tab-pane active' id='security')
+        h1 Security
+        h3 Change password
+        form(action='/user/change-password' method='post')
+          div(class='form-group')
+            label Old password
+            input(type='password' class='form-control' name='oldpassword' id='oldpassword' autocomplete='off')
+          hr
+          div(class='form-group')
+            label New password
+            input(type='password' class='form-control' name='newpassword' id='newpassword' autocomplete='off')
+          div(class='form-group')
+            label Confirm password
+            input(type='password' class='form-control' name='confirmpassword' id='confirmpassword' autocomplete='off')
+          button(type='submit' class='btn btn-success') Proceed
+      div(role='tabpanel' class='tab-pane' id='email')
+        h1 Email
+        h3 Change email
+        form(action='/user/change-email' method='post')
+          div(class='form-group')
+            label New email
+            input(type='email' class='form-control' name='newemail' id='newemail' autocomplete='on')
+          hr
+          div(class='form-group')
+            label Confirm your password
+            input(type='password' class='form-control' name='password' id='password' autocomplete='off')
+          button(type='submit' class='btn btn-success') Proceed
+  //- div(style='text-align: center;')
+  //-   h1 User Informations
+  //- h4 Username
+  //- p= user.username
+  //- h4 Email
+  //- p= user.email
+  //- h4 Permission Level
+  //- p= user.permissionLevel
+  //- h4 Cookie expire date
+  //- p= session.cookie._expires
+block style
+  style
+    include account.css

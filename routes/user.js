@@ -9,9 +9,9 @@ module.exports = function (User) {
   ///////////
   // /info //
   ///////////
-  router.get('/info', function (req, res, next) {
+  router.get('/account', function (req, res, next) {
     if (!req.user) { return res.redirect('/error/auth'); }
-    res.render('user/info', { user: req.user, session: req.session });
+    res.render('user/account', { user: req.user, session: req.session });
   });
   return router;
 };
