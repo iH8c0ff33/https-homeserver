@@ -13,6 +13,9 @@ block content
       div(role='tabpanel' class='tab-pane active' id='security')
         h1 Security
         h3 Change password
+        if error
+          each val in error
+            div(class='alert alert-danger')= val
         form(action='/user/change-password' method='post')
           div(class='form-group')
             label Old password
