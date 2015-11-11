@@ -7,6 +7,9 @@ block content
     if error
       each val in error
         div(class='alert alert-danger')= val
+    if message
+      each val in message
+        div(class='alert alert-info')= val
     form(action='/auth/login' method='post')
       div(class='form-group')
         label Username

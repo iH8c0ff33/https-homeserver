@@ -17,7 +17,7 @@ router.get('/', function (req, res) {
 ////////////
 router.get('/login', function (req, res) {
   if (req.user) { return res.redirect('/'); }
-  res.render('login', { error: req.flash('login-error') });
+  res.render('login', { error: req.flash('login-error'), message: req.flash('login-message') });
 });
 ///////////////
 // /register //
