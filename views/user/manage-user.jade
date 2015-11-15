@@ -5,19 +5,37 @@ block content
   div(class='panel panel-info')
     div(class='panel-heading') Manage #{manageUser.username}
     div(class='panel-body')
+      if updateError
+        each val in updateError
+          div(class='alert alert-danger')= val
+      if updateMessage
+        each val in updateMessage
+          div(class='alert alert-info')= val
       h4 Username
       p= manageUser.username
-      h4 Email
-      p= manageUser.email
-      h4 Permission level
-      p= manageUser.permissionLevel
-      h4 Salt
-      div(class='table-responsive')
-        table(class='table')
-          thead
-            td= manageUser.salt.toString('hex')
-      h4 Password hash
-      div(class='table-responsive')
-        table(class='table')
-          thead
-            td= manageUser.passwordHash.toString('hex')
+      hr
+      form(action='/user/update/'+manageUser.username method='post')
+        div(class='form-group')
+          label Email
+          input(type='email' class='form-control' name='newemail' id='newemail' autocomplete='off' value=manageUser.email required)
+        div(class='form-group')
+          label Permission level
+          select(class='form-control' name='permissionLevel' id='permissionLevel' autocomplete='off' required)
+            option 0
+            option 1
+            option 2
+            option 3
+            option 4
+            option 5
+            option 6
+            option 7
+            option 8
+            option 9
+            option 10
+        hr
+        p Current email is 
+          code= manageUser.email
+        p Current permission level is
+          code= manageUser.permissionLevel
+        button(type='submit' class='btn btn-success') Update
+        a(href='/user/random/'+manageUser.username class='btn btn-info' style='margin-left: 1em;') Random password

@@ -1,6 +1,6 @@
 extends /layouts/main
 block title
-  title User Information
+  title Account settings
 block content
   nav(class='col-sm-3')
     ul(class='nav section-selector')
@@ -13,8 +13,8 @@ block content
       div(role='tabpanel' class='tab-pane active' id='security')
         h1 Security
         h3 Change password
-        if error
-          each val in error
+        if passwordError
+          each val in passwordError
             div(class='alert alert-danger')= val
         form(action='/user/change-password' method='post')
           div(class='form-group')
@@ -30,7 +30,16 @@ block content
           button(type='submit' class='btn btn-success') Proceed
       div(role='tabpanel' class='tab-pane' id='email')
         h1 Email
+        h3 Current email
+        p Your current email is
+          code= user.email
         h3 Change email
+        if emailError
+          each val in emailError
+            div(class='alert alert-danger')= val
+        if emailMessage
+          each val in emailMessage
+            div(class='alert alert-info')= val
         form(action='/user/change-email' method='post')
           div(class='form-group')
             label New email
@@ -40,16 +49,6 @@ block content
             label Confirm your password
             input(type='password' class='form-control' name='password' id='password' autocomplete='off')
           button(type='submit' class='btn btn-success') Proceed
-  //- div(style='text-align: center;')
-  //-   h1 User Informations
-  //- h4 Username
-  //- p= user.username
-  //- h4 Email
-  //- p= user.email
-  //- h4 Permission Level
-  //- p= user.permissionLevel
-  //- h4 Cookie expire date
-  //- p= session.cookie._expires
 block style
   style
     include account.css
