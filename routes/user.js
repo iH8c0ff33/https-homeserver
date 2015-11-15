@@ -76,20 +76,30 @@ module.exports = function (User) {
         res.redirect('/user/account#email');
       });
     }
-    User.findOne({ where: { username: req.user.username } }).then(function (user) {
-      user.update({ email: req.body.newemail }).then(function (user) {
-        req.flash('email-message', 'Your email was changed successfully.');
+    crypto.pbkdf2(req.body.password, req.user.salt, 4096, 512, 'sha256', function (err, hash) {
+      if (hash.equals(req.user.passwordHash)) {
+        User.findOne({ where: { username: req.user.username } }).then(function (user) {
+          user.update({ email: req.body.newemail }).then(function (user) {
+            req.flash('email-message', 'Your email was changed successfully.');
+            return waitSession(req, res, next, function (err) {
+              if (err) { return next(err); }
+              res.redirect('/user/account#email');
+            });
+          }, function (err) {
+            req.flash('email-error', 'Sorry. This email address is used by someone else');
+            return waitSession(req, res, next, function (err) {
+              if (err) { return next(err); }
+              res.redirect('/user/account#email');
+            });
+          });
+        });
+      } else {
+        req.flash('email-error', 'Sorry. The password you entered is not correct.');
         return waitSession(req, res, next, function (err) {
           if (err) { return next(err); }
           res.redirect('/user/account#email');
         });
-      }, function (err) {
-        req.flash('email-error', 'Sorry. This email address is used by someone else');
-        return waitSession(req, res, next, function (err) {
-          if (err) { return next(err); }
-          res.redirect('/user/account#email');
-        });
-      });
+      }
     });
   });
   router.post('/new-user', function (req, res, next) {
