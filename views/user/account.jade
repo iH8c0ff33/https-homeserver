@@ -19,14 +19,14 @@ block content
         form(action='/user/change-password' method='post')
           div(class='form-group')
             label Old password
-            input(type='password' class='form-control' name='oldpassword' id='oldpassword' autocomplete='off')
+            input(type='password' class='form-control' name='oldpassword' id='oldpassword' autocomplete='off' required)
           hr
           div(class='form-group')
             label New password
-            input(type='password' class='form-control' name='newpassword' id='newpassword' autocomplete='off')
+            input(type='password' class='form-control' name='newpassword' id='newpassword' autocomplete='off' required)
           div(class='form-group')
             label Confirm password
-            input(type='password' class='form-control' name='confirmpassword' id='confirmpassword' autocomplete='off')
+            input(type='password' class='form-control' name='confirmpassword' id='confirmpassword' autocomplete='off' required)
           button(type='submit' class='btn btn-success') Proceed
       div(role='tabpanel' class='tab-pane' id='email')
         h1 Email
@@ -43,11 +43,11 @@ block content
         form(action='/user/change-email' method='post')
           div(class='form-group')
             label New email
-            input(type='email' class='form-control' name='newemail' id='newemail' autocomplete='on')
+            input(type='email' class='form-control' name='newemail' id='newemail' autocomplete='on' required)
           hr
           div(class='form-group')
             label Confirm your password
-            input(type='password' class='form-control' name='password' id='password' autocomplete='off')
+            input(type='password' class='form-control' name='password' id='password' autocomplete='off' required)
           button(type='submit' class='btn btn-success') Proceed
 block style
   style
