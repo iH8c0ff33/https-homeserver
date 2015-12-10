@@ -1,4 +1,4 @@
-var socket = io.connect('https://danielemonteleone.zapto.org:4433');
+var socket = io.connect('https://danielemonteleone.zapto.org');
 var pools = [];
 socket.on('connect', function () {
   socket.emit('poolRequest');
