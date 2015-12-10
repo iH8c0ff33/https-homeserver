@@ -1,0 +1,19 @@
+extends /layouts/main
+block title
+  title Raid Monitor
+block content
+  div(class='col-md-9' id='container')
+    div(class='panel panel-primary')
+      div(class='panel-heading') Loading...
+        span(class='label label-info', style='position: relative; left: 5px; bottom: 2px;') Please
+        span(class='label label-success', style='position: relative; left: 10px; bottom: 2px;') wait.
+        span(class='label pull-right', style='position: relative; top: 2px;') /mnt/raidz
+        span(class='label label-info pull-right', style='position: relative; top: 2px; right: 5px;') 714G
+      div(class='panel-body')
+  div(class='col-md-3')
+    div(class='panel panel-info')
+      div(class='panel-heading') Settings
+      div(class='panel-body') Test Body
+block scripts
+  script(src='/js/socket.io.min.js')
+  script(src='/js/raid.js')
