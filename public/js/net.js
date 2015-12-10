@@ -1,4 +1,4 @@
-var socket = io.connect('http://danielemonteleone.zapto.org');
+var socket = io.connect('https://danielemonteleone.zapto.org:4433');
 function updateNet() {
   socket.emit('networkRequest');
 }
