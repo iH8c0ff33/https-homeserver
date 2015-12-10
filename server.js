@@ -48,13 +48,14 @@ app.use(flash());
 app.use('/', require(__dirname+'/routes/index.js'));
 app.use('/auth', require(__dirname+'/routes/authentication.js')(passport));
 app.use('/user', require(__dirname+'/routes/user.js')(User));
+app.use('/monitor', require(__dirname+'/routes/monitor.js'));
 app.use('/error', require(__dirname+'/routes/error.js'));
 app.use(express.static(__dirname+'/public/'));
 /////////////
 // 404/500 //
 /////////////
 app.use(function (req, res) {
-  res.render('error/error', {
+  res.status(404).render('error/error', {
     title: '404 Not Found',
     message: 'Sorry. The page you requested was not found on this server.',
     link: '/',
@@ -63,7 +64,7 @@ app.use(function (req, res) {
 });
 app.use(function (err, req, res, next) {
   console.log(err);
-  res.render('error/error', {
+  res.status(500).render('error/error', {
     title: '500 Server Error',
     message: 'Sorry. Something has gone wrong with your request, we\'ll try to fix this problem soon.',
     link: '/',
@@ -81,4 +82,25 @@ passport.deserializeUser(passportSerialize.deserialize);
 ////////////
 // Server //
 ////////////
-https.createServer(require(__dirname+'/config/keys.js'), app).listen(port);
+var server = https.createServer(require(__dirname+'/config/keys.js'), app).listen(port);
+///////////////
+// Socket.io //
+///////////////
+var io      = require('socket.io')(server);
+var statmon = require(__dirname+'/config/statmon.js');
+
+io.on('connection', function (socket) {
+  console.log('client connected with address: '+socket.client.conn.remoteAddress);
+  socket.on('networkRequest', function() {
+    statmon.checkNet(function (hosts) {
+      socket.emit('networkHosts', hosts);
+    });
+  });
+  socket.on('poolRequest', function() {
+    console.log('pools requested');
+    statmon.checkPool(function (pools) {
+      socket.emit('zfsPools', pools);
+      console.log('pools sent');
+    });
+  });
+});
