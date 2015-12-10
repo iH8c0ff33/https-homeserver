@@ -3,9 +3,9 @@
 //////////////////
 var router = require('express').Router();
 
-///////////////////
-// /authenticate //
-///////////////////
+///////////
+// /auth //
+///////////
 router.get('/auth', function (req, res) {
   res.render('error/auth');
 });
