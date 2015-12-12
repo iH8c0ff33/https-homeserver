@@ -10,4 +10,8 @@ router.get('/raid', isAuthenticated, isAuthorized, function (req, res, next) {
 router.get('/network', isAuthenticated, isAuthorized, function (req, res, next) {
   res.render('monitor/network', { user: req.user });
 });
+// GET /monitor/services
+router.get('/services', isAuthenticated, isAuthorized, function (req, res, next) {
+  res.render('monitor/services', { user: req.user });
+});
 module.exports = router;
