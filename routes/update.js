@@ -1,16 +1,10 @@
-var router = require('express').Router();
-var waitSession = require(__dirname+'/../config/wait-save.js');
+var router          = require('express').Router();
+var waitSession     = require(__dirname+'/../config/wait-save.js');
+var isAuthenticated = require(__dirname+'/../config/checkauth.js');
+var isOwner         = require(__dirname+'/../config/checkowner.js');
 
 module.exports = function (User) {
-  router.post('/*', function (req, res, next) {
-    if (!req.user) { return res.redirect('/error/auth'); }
-    if (req.user.permissionLevel < 10) { return res.render('error/error', {
-      title: 'Insufficient permissions',
-      message: 'Sorry. You need permission level greater than 9 to update users',
-      link: '/',
-      linkText: 'Take me Home'
-    }); }
-    console.log(req.body);
+  router.post('/*', isAuthenticated, isOwner, function (req, res, next) {
     var error = false;
     if (!req.body.newemail) { req.flash('update-error', 'Sorry. New email field cannot be blank.'); error = true }
     if (!req.body.permissionLevel) { req.flash('update-error', 'Sorry. New permission level field cannot be blank.'); error = true; }
