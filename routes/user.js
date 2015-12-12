@@ -1,9 +1,11 @@
 /////////////////
 // User router //
 /////////////////
-var router = require('express').Router();
-var crypto = require('crypto');
-var waitSession = require(__dirname+'/../config/wait-save.js');
+var router          = require('express').Router();
+var crypto          = require('crypto');
+var waitSession     = require(__dirname+'/../config/wait-save.js');
+var isAuthenticated = require(__dirname+'/../config/checkauth.js');
+var isOwner         = require(__dirname+'/../config/checkowner.js');
 
 module.exports = function (User) {
   router.use('/manage', require(__dirname+'/manage.js')(User));
@@ -13,15 +15,13 @@ module.exports = function (User) {
   //////////////
   // /account //
   //////////////
-  router.get('/account', function (req, res, next) {
-    if (!req.user) { return res.redirect('/error/auth'); }
+  router.get('/account', isAuthenticated, function (req, res, next) {
     res.render('user/account', { user: req.user, session: req.session, passwordError: req.flash('password-error'), emailError: req.flash('email-error'), emailMessage: req.flash('email-message') });
   });
   //////////////////////
   // /change-password //
   //////////////////////
-  router.post('/change-password', function (req, res, next) {
-    if (!req.user) { return res.redirect('/error/auth'); }
+  router.post('/change-password', isAuthenticated, function (req, res, next) {
     var error = false;
     if (!req.body.oldpassword) { req.flash('password-error', 'Sorry. Old password field seems to be blank.'); error = true; }
     if (!req.body.newpassword) { req.flash('password-error', 'Sorry. New password field seems to be blank.'); error = true; }
@@ -65,8 +65,7 @@ module.exports = function (User) {
       }
     });
   });
-  router.post('/change-email', function (req, res, next) {
-    if (!req.user) { return res.redirect('/error/auth'); }
+  router.post('/change-email', isAuthenticated, function (req, res, next) {
     var error = false;
     if (!req.body.password) { req.flash('email-error', 'Sorry. Password field seems to be blank.'); error = true; }
     if (!req.body.newemail) { req.flash('email-error', 'Sorry. Email field seems to be blank.'); error = true; }
@@ -102,14 +101,7 @@ module.exports = function (User) {
       }
     });
   });
-  router.post('/new-user', function (req, res, next) {
-    if (!req.user) { return res.redirect('/error/auth'); }
-    if (req.user.permissionLevel < 10) { return res.render('error/error', {
-      title: 'Insufficient permissions',
-      message: 'Sorry. You need permission level greater than 9 to create new users.',
-      link: '/',
-      linkText: 'Take me Home'
-    }); }
+  router.post('/new-user', isAuthenticated, isOwner, function (req, res, next) {
     var error = false;
     if (!req.body.username) { req.flash('create-error', 'Sorry. Username field cannot be blank.'); error = true; }
     if (!req.body.email) { req.flash('create-error', 'Sorry. Email field cannot be blank.'); error = true; }
