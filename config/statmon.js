@@ -31,7 +31,10 @@ function analyzeProperty(propertyName, linesArray, startLine, callback) {
       }
       property[current] = {
         name: disks[current][0],
-        state: disks[current][1]
+        state: disks[current][1],
+        readErrors: disks[current][2],
+        writeErrors: disks[current][3],
+        checksumErrors: disks[current][4]
       };
       if (reason) {
         property[current].reason = reason;

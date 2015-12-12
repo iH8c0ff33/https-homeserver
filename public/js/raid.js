@@ -31,7 +31,7 @@ socket.on('zfsPools', function (data) {
       $('#disk'+current+'Body').append('<div class="alert alert-warning"><h4>Action</h4><p>'+pools[current].poolAction+''+seeLink+'</p></div>');
     }
     $('#disk'+current+'Body').append('<div class="alert alert-info"><h4>Scan status</h4><p>'+pools[current].poolScan+'</p></div>');
-    $('#disk'+current+'Body').append('<div class="table-responsive"><table class="table table-striped table-hover"><thead><tr><th>Name</th><th>State</th><th>State reason</th><th>Power state</th></tr></thead><tbody id="disk'+current+'TableBody"</table></div>');
+    $('#disk'+current+'Body').append('<div class="table-responsive"><table class="table table-striped table-hover"><thead><tr><th>Name</th><th>State</th><th>State reason</th><th>Power state</th><th>R</th><th>W</th><th>CS</th></tr></thead><tbody id="disk'+current+'TableBody"</table></div>');
     for (var currentDisk = 0, lastDisk = pools[current].poolDisks.length; currentDisk < lastDisk; currentDisk++) {
       var reason = 'disk is ok';
       var reasonColor = 'label-success';
@@ -53,7 +53,7 @@ socket.on('zfsPools', function (data) {
       if (pools[current].poolDisks[currentDisk].diskState) {
         diskPowerState = pools[current].poolDisks[currentDisk].diskState;
       }
-      $('#disk'+current+'TableBody').append('<tr><th>'+pools[current].poolDisks[currentDisk].name+'</th><th><span class="label '+diskStateColor+'">'+pools[current].poolDisks[currentDisk].state+'</span></th><th><span class="label '+reasonColor+'">'+reason+'</span></th><th><span class="label '+diskPowerColor+'">'+diskPowerState+'</span></th><tr>');
+      $('#disk'+current+'TableBody').append('<tr><th>'+pools[current].poolDisks[currentDisk].name+'</th><th><span class="label '+diskStateColor+'">'+pools[current].poolDisks[currentDisk].state+'</span></th><th><span class="label '+reasonColor+'">'+reason+'</span></th><th><span class="label '+diskPowerColor+'">'+diskPowerState+'</span></th><th>'+pools[current].poolDsisks[currentDisk].readErrors+'</th><th>'+pools[current].poolDisks[currentDisk].writeErrors+'</th><th>'+pools[current].poolDisks[currentDisk].checksumErrors+'</th><tr>');
     }
     var errorColor = 'alert-warning';
     if (pools[current].poolErrors == 'No known data errors') {
