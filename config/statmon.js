@@ -162,6 +162,24 @@ function checkNet(callback) {
   });
 }
 
+function checkServices(callback) {
+  exec('systemctl', function (error, stdout, stderr) {
+    var output = stdout.split('\n').filter(String);
+    output = output.slice(1).slice(0, -8);
+    var services = [];
+    for (var length = output.length, current = 0; current < length; current++) {
+      output[current] = output[current].slice(1).split(' ').filter(String);
+      services[current] = {
+        name: output[current][0],
+        load: output[current][1],
+        state: output[current][3],
+        desc: output[current].slice(4).join(' ').split('\\x20').join(' ')
+      };
+    }
+    return callback(services);
+  });
+}
+
 exports = module.exports = {
   checkPool: checkPool,
   checkNet: checkNet
