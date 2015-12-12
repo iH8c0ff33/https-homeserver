@@ -1,6 +1,4 @@
-/////////////
-// Express //
-/////////////
+// Express
 var express        = require('express');
 var cookieParser   = require('cookie-parser');
 var bodyParser     = require('body-parser');
@@ -11,49 +9,35 @@ var passport       = require('passport');
 var LocalStrategy  = require('passport-local').Strategy;
 var app            = express();
 app.locals.basedir = __dirname+'/views';
-///////////
-// HTTPS //
-///////////
+// HTTPS
 var https = require('https');
 var port  = process.env.PORT || 4433;
-//////////////
-// Database //
-//////////////
+// Database
 var Sequelize    = require('sequelize');
 var dbConfig     = require(__dirname+'/config/database.js');
 var db           = new Sequelize(dbConfig.url, { logging: console.log });
 var sessionStore = new SequelizeStore({ db: db });
-////////////
-// Models //
-////////////
+// Models
 var User = require(__dirname+'/models/user.js')(Sequelize, db);
-///////////////////
-// Express setup //
-///////////////////
+// Express setup
 app.set('views', __dirname+'/views');
 app.set('view engine', 'jade');
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-////////////////////
-// Passport setup //
-////////////////////
+// Passport setup
 app.use(session(require(__dirname+'/config/session.js')(sessionStore)));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-////////////
-// Routes //
-////////////
+// Routes
 app.use('/', require(__dirname+'/routes/index.js'));
 app.use('/auth', require(__dirname+'/routes/authentication.js')(passport));
 app.use('/user', require(__dirname+'/routes/user.js')(User));
 app.use('/monitor', require(__dirname+'/routes/monitor.js'));
 app.use('/error', require(__dirname+'/routes/error.js'));
 app.use(express.static(__dirname+'/public/'));
-/////////////
-// 404/500 //
-/////////////
+// 404/500
 app.use(function (req, res) {
   res.status(404).render('error/error', {
     title: '404 Not Found',
@@ -71,21 +55,15 @@ app.use(function (err, req, res, next) {
     linkText: 'Take Me Home'
   });
 });
-/////////////////////
-// Passport config //
-/////////////////////
+// Passport config
 var passportSerialize = require(__dirname+'/config/passport-serialize.js')(User);
 passport.use('local-login', require(__dirname+'/config/local-strategy.js')(User));
 passport.use('local-register', require(__dirname+'/config/local-signup-strategy.js')(User));
 passport.serializeUser(passportSerialize.serialize);
 passport.deserializeUser(passportSerialize.deserialize);
-////////////
-// Server //
-////////////
+// Server
 var server = https.createServer(require(__dirname+'/config/keys.js'), app).listen(port);
-///////////////
-// Socket.io //
-///////////////
+// Socket.io
 var io      = require('socket.io')(server);
 var statmon = require(__dirname+'/config/statmon.js');
 
@@ -97,10 +75,13 @@ io.on('connection', function (socket) {
     });
   });
   socket.on('poolRequest', function() {
-    console.log('pools requested');
     statmon.checkPool(function (pools) {
       socket.emit('zfsPools', pools);
-      console.log('pools sent');
+    });
+  });
+  socket.on('servicesRequest', function  () {
+    statmon.checkServices(function (services) {
+      socket.emit('servicesList', services);
     });
   });
 });

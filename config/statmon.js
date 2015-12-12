@@ -182,5 +182,6 @@ function checkServices(callback) {
 
 exports = module.exports = {
   checkPool: checkPool,
-  checkNet: checkNet
+  checkNet: checkNet,
+  checkServices: checkServices
 }
