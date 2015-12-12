@@ -1,5 +1,5 @@
 ////////////////////
-// Local Strategy //
+// Login Strategy //
 ////////////////////
 var LocalStrategy  = require('passport-local').Strategy;
 var crypto         = require('crypto');
