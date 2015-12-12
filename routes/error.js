@@ -1,11 +1,7 @@
-//////////////////
-// Error router //
-//////////////////
+// Error router
 var router = require('express').Router();
 
-///////////
-// /auth //
-///////////
+// GET /error/auth
 router.get('/auth', function (req, res) {
   res.render('error/auth');
 });
