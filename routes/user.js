@@ -1,6 +1,4 @@
-/////////////////
-// User router //
-/////////////////
+// User router
 var router          = require('express').Router();
 var crypto          = require('crypto');
 var waitSession     = require(__dirname+'/../config/wait-save.js');
@@ -12,15 +10,11 @@ module.exports = function (User) {
   router.use('/delete', require(__dirname+'/delete.js')(User));
   router.use('/update', require(__dirname+'/update.js')(User));
   router.use('/random', require(__dirname+'/random.js')(User));
-  //////////////
-  // /account //
-  //////////////
+  // GET /user/account
   router.get('/account', isAuthenticated, function (req, res, next) {
     res.render('user/account', { user: req.user, session: req.session, passwordError: req.flash('password-error'), emailError: req.flash('email-error'), emailMessage: req.flash('email-message') });
   });
-  //////////////////////
-  // /change-password //
-  //////////////////////
+  // POST /user/change-password
   router.post('/change-password', isAuthenticated, function (req, res, next) {
     var error = false;
     if (!req.body.oldpassword) { req.flash('password-error', 'Sorry. Old password field seems to be blank.'); error = true; }
@@ -65,6 +59,7 @@ module.exports = function (User) {
       }
     });
   });
+  // POST /user/change-email
   router.post('/change-email', isAuthenticated, function (req, res, next) {
     var error = false;
     if (!req.body.password) { req.flash('email-error', 'Sorry. Password field seems to be blank.'); error = true; }
@@ -101,6 +96,7 @@ module.exports = function (User) {
       }
     });
   });
+  // POST /user/new-user
   router.post('/new-user', isAuthenticated, isOwner, function (req, res, next) {
     var error = false;
     if (!req.body.username) { req.flash('create-error', 'Sorry. Username field cannot be blank.'); error = true; }

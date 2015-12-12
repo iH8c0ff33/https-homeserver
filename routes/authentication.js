@@ -1,13 +1,9 @@
-///////////////////////////
-// Authentication router //
-///////////////////////////
+// Authentication router
 var router = require('express').Router();
 var waitSession = require(__dirname+'/../config/wait-save.js');
 
 module.exports = function (passport) {
-  ////////////
-  // /login //
-  ////////////
+  // POST /auth/login
   router.post('/login', function (req, res, next) {
     var error = false;
     if (!req.body.username) { req.flash('login-error', 'Sorry. Username field seems to be blank.'); error = true; }
@@ -35,9 +31,7 @@ module.exports = function (passport) {
       });
     })(req, res, next);
   });
-  /////////////
-  // /logout //
-  /////////////
+  // GET /auth/logout
   router.get('/logout' , function (req, res, next) {
     req.logout();
     return waitSession(req, res, next, function (err) {
@@ -45,9 +39,7 @@ module.exports = function (passport) {
       res.redirect('/');
     });
   });
-  ///////////////
-  // /register //
-  ///////////////
+  // POST /auth/register
   router.post('/register', function (req, res, next) {
     var error = false;
     if (!req.body.username) { req.flash('register-error', 'Sorry. You must enter a username.'); error = true; }

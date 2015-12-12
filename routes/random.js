@@ -6,13 +6,6 @@ var isOwner         = require(__dirname+'/../config/checkowner.js');
 
 module.exports = function (User) {
   router.get('/*', isAuthenticated, isOwner, function (req, res, next) {
-    if (!req.user) { return res.redirect('/error/auth'); }
-    if (req.user.permissionLevel < 10) { return res.render('error/error', {
-      title: 'Insufficient permissions',
-      message: 'Sorry. You need permission level greater than 9 to delete users',
-      link: '/',
-      linkText: 'Take me Home'
-    }); }
     User.findOne({ where: { username: req.url.slice(1) } }).then(function (user) {
       if (!user) { return res.send('user not found'); }
       crypto.randomBytes(6, function (err, passwordHex) {
