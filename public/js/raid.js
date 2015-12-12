@@ -53,7 +53,7 @@ socket.on('zfsPools', function (data) {
       if (pools[current].poolDisks[currentDisk].diskState) {
         diskPowerState = pools[current].poolDisks[currentDisk].diskState;
       }
-      $('#disk'+current+'TableBody').append('<tr><th>'+pools[current].poolDisks[currentDisk].name+'</th><th><span class="label '+diskStateColor+'">'+pools[current].poolDisks[currentDisk].state+'</span></th><th><span class="label '+reasonColor+'">'+reason+'</span></th><th><span class="label '+diskPowerColor+'">'+diskPowerState+'</span></th><th>'+pools[current].poolDsisks[currentDisk].readErrors+'</th><th>'+pools[current].poolDisks[currentDisk].writeErrors+'</th><th>'+pools[current].poolDisks[currentDisk].checksumErrors+'</th><tr>');
+      $('#disk'+current+'TableBody').append('<tr><th>'+pools[current].poolDisks[currentDisk].name+'</th><th><span class="label '+diskStateColor+'">'+pools[current].poolDisks[currentDisk].state+'</span></th><th><span class="label '+reasonColor+'">'+reason+'</span></th><th><span class="label '+diskPowerColor+'">'+diskPowerState+'</span></th><th>'+pools[current].poolDisks[currentDisk].readErrors+'</th><th>'+pools[current].poolDisks[currentDisk].writeErrors+'</th><th>'+pools[current].poolDisks[currentDisk].checksumErrors+'</th><tr>');
     }
     var errorColor = 'alert-warning';
     if (pools[current].poolErrors == 'No known data errors') {
