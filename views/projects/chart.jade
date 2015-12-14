@@ -1,0 +1,13 @@
+extends /layouts/main
+block title
+  title Charts test
+block content
+  div(class='panel panel-primary')
+    div(class='panel-heading') Title
+    div(class='panel-body')
+      div(id='container' style='height: 400px; min-width: 310px;')
+block scripts
+  script(src='https://code.highcharts.com/stock/highstock.js')
+  script(src='https://code.highcharts.com/stock/modules/exporting.js')
+  script(src='/js/socket.io.min.js')
+  script(src='/js/chart.js')
