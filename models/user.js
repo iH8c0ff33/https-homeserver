@@ -1,6 +1,4 @@
-////////////////
-// User model //
-////////////////
+// User model
 module.exports = function (Sequelize, db) {
   var User = db.define('users', {
     username: {
