@@ -97,3 +97,13 @@ setInterval(function () {
     io.sockets.emit('new-data', [item.time.getTime(), item.value]);
   });
 }, 30*1000);
+setInterval(function () {
+  Series.findAll({ where: {
+    time: { $lt: (new Date()).setDate((new Date()).getDate()-1) }
+  } }).then(function (results) {
+    console.log(results);
+    for (var current = 0, length = results.length; current < length; current++) {
+      results[current].destroy();
+    }
+  });
+}, 30*1000);
