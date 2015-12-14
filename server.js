@@ -6,7 +6,6 @@ var session        = require('express-session');
 var SequelizeStore = require('connect-session-sequelize')(session.Store);
 var flash          = require('express-flash');
 var passport       = require('passport');
-var LocalStrategy  = require('passport-local').Strategy;
 var app            = express();
 app.locals.basedir = __dirname+'/views';
 // HTTPS
@@ -38,7 +37,7 @@ app.use('/monitor', require(__dirname+'/routes/monitor.js'));
 app.use('/error', require(__dirname+'/routes/error.js'));
 app.use(express.static(__dirname+'/public/'));
 // 404/500
-app.use(function (req, res) {
+app.use(function (_req, res) {
   res.status(404).render('error/error', {
     title: '404 Not Found',
     message: 'Sorry. The page you requested was not found on this server.',
@@ -46,7 +45,7 @@ app.use(function (req, res) {
     linkText: 'Take Me Home'
   });
 });
-app.use(function (err, req, res, next) {
+app.use(function (err, _req, res) {
   console.log(err);
   res.status(500).render('error/error', {
     title: '500 Server Error',
