@@ -18,6 +18,8 @@ var db           = new Sequelize(dbConfig.url, { logging: console.log });
 var sessionStore = new SequelizeStore({ db: db });
 // Models
 var User = require(__dirname+'/models/user.js')(Sequelize, db);
+var Series = require(__dirname+'/models/series.js')(Sequelize, db);
+var Series2 = require(__dirname+'/models/series2.js')(Sequelize, db);
 // Express setup
 app.set('views', __dirname+'/views');
 app.set('view engine', 'jade');
@@ -31,10 +33,12 @@ app.use(passport.session());
 app.use(flash());
 // Routes
 app.use('/', require(__dirname+'/routes/index.js'));
+app.use('/ajax', require(__dirname+'/routes/ajax.js')(Series, Series2));
 app.use('/auth', require(__dirname+'/routes/authentication.js')(passport));
-app.use('/user', require(__dirname+'/routes/user.js')(User));
-app.use('/monitor', require(__dirname+'/routes/monitor.js'));
 app.use('/error', require(__dirname+'/routes/error.js'));
+app.use('/monitor', require(__dirname+'/routes/monitor.js'));
+app.use('/projects', require(__dirname+'/routes/projects.js'));
+app.use('/user', require(__dirname+'/routes/user.js')(User));
 app.use(express.static(__dirname+'/public/'));
 // 404/500
 app.use(function (_req, res) {
@@ -65,7 +69,6 @@ var server = https.createServer(require(__dirname+'/config/keys.js'), app).liste
 // Socket.io
 var io      = require('socket.io')(server);
 var statmon = require(__dirname+'/config/statmon.js');
-
 io.on('connection', function (socket) {
   console.log('client connected with address: '+socket.client.conn.remoteAddress);
   socket.on('networkRequest', function() {
@@ -84,3 +87,13 @@ io.on('connection', function (socket) {
     });
   });
 });
+setInterval(function () {
+  var time = (new Date()).getTime();
+  var value = Math.random() * 100;
+  Series.create({
+    time: time,
+    value: value
+  }).then(function (item) {
+    io.sockets.emit('new-data', [item.time.getTime(), item.value]);
+  });
+}, 30*1000);

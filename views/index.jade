@@ -1,5 +1,46 @@
 extends /layouts/main
 block title
-  title Daw
+  title Home Server
 block content
-  p That's the main content
+  div(class='jumbotron')
+    h1(style='margin-left: 0.5em; margin-right: 0.5em;') Daniele's Home Server
+    p(style='margin-left: 1.5em; margin-right: 1.5em; margin-top: 2em;') Simple HTTPS server built by me to monitor my homeserver. Comes with a raid monitor, to check zfs raid status, a network monitor, to monitor network clients, and a systemd services monitor to easily check services status.
+    p(style='margin-left: 1.5em; margin-right: 1.5em; margin-top: 2em;')
+      a(class='btn btn-flat btn-primary btn-lg' href='https://github.com/iH8c0ff33/https-homeserver') GitHub repo
+  div(class='well')
+    h3(style='margin-bottom: 2em;') Monitors
+    div(class='list-group')
+      div(class='list-group-item')
+        div(class='row-action-primary')
+          i(class='material-icons') memory
+        div(class='row-content')
+          div(class='least-content') Daw
+          a(href='/monitor/raid')
+            h4(class='list-group-item-heading') ZFS Raid Monitor
+          p(class='list-group-item-text') See raid disks status.
+      div(class='list-group-item')
+        div(class='row-action-primary')
+          i(class='material-icons') wifi
+        div(class='row-content')
+          div(class='least-content') Daw
+          a(href='/monitor/network')
+            h4(class='list-group-item-heading') Network Monitor
+          p(class='list-group-item-text') See clients connected to network.
+      div(class='list-group-item')
+        div(class='row-action-primary')
+          i(class='material-icons') security
+        div(class='row-content')
+          div(class='least-content') Daw
+          a(href='/monitor/services')
+            h4(class='list-group-item-heading') Services Monitor
+          p(class='list-group-item-text') See systemd services status.
+    h3(style='margin-top: 1em; margin-bottom: 2em;') Projects
+    div(class='list-group')
+      div(class='list-group-item')
+        div(class='row-action-primary')
+          i(class='material-icons') widgets
+        div(class='row-content')
+          div(class='least-content') Daw
+          a(href='/projects/chart')
+            h4(class='list-group-item-heading') Dynamic chart
+          p(class='list-group-item-text') A useless dynamic chart which shows random data generated every 30''.
