@@ -87,13 +87,3 @@ io.on('connection', function (socket) {
     });
   });
 });
-setInterval(function () {
-  var time = (new Date()).getTime();
-  var value = Math.random() * 100;
-  Series.create({
-    time: time,
-    value: value
-  }).then(function (item) {
-    io.sockets.emit('new-data', [item.time.getTime(), item.value]);
-  });
-}, 30*1000);
