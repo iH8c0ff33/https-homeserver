@@ -17,9 +17,9 @@ var dbConfig     = require(__dirname+'/config/database.js');
 var db           = new Sequelize(dbConfig.url, { logging: console.log });
 var sessionStore = new SequelizeStore({ db: db });
 // Models
-var User = require(__dirname+'/models/user.js')(Sequelize, db);
-var Series = require(__dirname+'/models/series.js')(Sequelize, db);
-var Series2 = require(__dirname+'/models/series2.js')(Sequelize, db);
+var User = db.import(__dirname+'/models/user.js');
+var Series = db.import(__dirname+'/models/series.js');
+var Series2 = db.import(__dirname+'/models/series2.js');
 // Express setup
 app.set('views', __dirname+'/views');
 app.set('view engine', 'jade');

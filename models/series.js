@@ -1,6 +1,6 @@
 // Series model
-module.exports = function(Sequelize, db) {
-  var Temps = db.define('data', {
+module.exports = function(db, Sequelize) {
+  return db.define('data', {
     value: {
       type: Sequelize.INTEGER,
       allowNull: false
@@ -11,6 +11,4 @@ module.exports = function(Sequelize, db) {
       allowNull: false
     }
   });
-  Temps.sync();
-  return Temps;
 };

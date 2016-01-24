@@ -1,6 +1,6 @@
 // Series2 model
-module.exports = function (Sequelize, db) {
-  var Speeds = db.define('data1', {
+module.exports = function (db, Sequelize) {
+  return db.define('data1', {
     value: {
       type: Sequelize.INTEGER,
       allowNull: false
@@ -11,6 +11,4 @@ module.exports = function (Sequelize, db) {
       allowNull: false
     }
   });
-  Speeds.sync();
-  return Speeds;
 };

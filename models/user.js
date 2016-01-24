@@ -1,6 +1,6 @@
 // User model
-module.exports = function (Sequelize, db) {
-  var User = db.define('users', {
+module.exports = function (db, Sequelize) {
+  return db.define('users', {
     username: {
       type: Sequelize.STRING(24),
       unique: true,
@@ -22,8 +22,7 @@ module.exports = function (Sequelize, db) {
     permissionLevel: {
       type: Sequelize.INTEGER,
       allowNull: false
-    }
+    },
+    permissions: Sequelize.JSON
   });
-  User.sync();
-  return User;
 };
